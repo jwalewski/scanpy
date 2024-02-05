@@ -320,6 +320,7 @@ def savefig_or_show(
     dpi: int | None = None,
     ext: str | None = None,
     save: bool | str | None = None,
+    append_filepath: bool | None = False
 ):
     if isinstance(save, str):
         # check whether `save` contains a figure extension
@@ -329,8 +330,12 @@ def savefig_or_show(
                     ext = try_ext[1:]
                     save = save.replace(try_ext, "")
                     break
+        #New behavior: check if the user would like the writekey to be appended instead of replaced. Since most programs replace, that is considered defualt behavior
         # append it
-        writekey += save
+        if append_filepath:
+            writekey += save
+        else:
+            writekey = save
         save = True
     save = settings.autosave if save is None else save
     show = settings.autoshow if show is None else show
